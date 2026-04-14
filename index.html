@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notebook Pro X500 — TechStore</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#f5f5f5;color:#1a1a1a;font-size:16px;line-height:1.6}
+a{color:inherit;text-decoration:none}
+.container{max-width:960px;margin-inline:auto;padding-inline:24px}
+
+header{background:#fff;border-bottom:1px solid #e5e5e5;padding:14px 0}
+.header-inner{display:flex;align-items:center;justify-content:space-between}
+.brand{font-size:20px;font-weight:700;letter-spacing:-0.03em;color:#111}
+.brand span{color:#0070f3}
+nav{display:flex;gap:24px;font-size:14px;color:#555}
+nav a:hover{color:#111}
+
+.breadcrumb{font-size:13px;color:#888;padding:16px 0;display:flex;gap:8px;align-items:center}
+.breadcrumb span{color:#ccc}
+
+.product-layout{display:grid;grid-template-columns:1fr 380px;gap:40px;padding-bottom:48px}
+@media(max-width:720px){.product-layout{grid-template-columns:1fr}}
+
+.product-image{background:#fff;border:1px solid #e5e5e5;border-radius:12px;
+  aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.product-image img{width:100%;height:100%;object-fit:cover}
+.product-image-placeholder{display:flex;flex-direction:column;align-items:center;
+  gap:12px;color:#ccc;font-size:13px}
+.product-image-placeholder svg{opacity:0.3}
+
+.product-info{display:flex;flex-direction:column;gap:0}
+.product-category{font-size:12px;font-weight:600;color:#0070f3;text-transform:uppercase;
+  letter-spacing:0.08em;margin-bottom:8px}
+.product-title{font-size:26px;font-weight:700;letter-spacing:-0.03em;line-height:1.2;margin-bottom:12px;color:#111}
+.product-rating{display:flex;align-items:center;gap:8px;margin-bottom:20px}
+.stars{color:#f59e0b;font-size:15px;letter-spacing:1px}
+.rating-count{font-size:13px;color:#888}
+
+.price-section{background:#fff;border:1px solid #e5e5e5;border-radius:12px;
+  padding:24px;margin-bottom:20px}
+.price-label{font-size:12px;color:#888;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px}
+.price-original{font-size:14px;color:#bbb;text-decoration:line-through;margin-bottom:4px}
+.price-current{font-size:36px;font-weight:700;color:#111;letter-spacing:-0.04em;line-height:1}
+.price-installment{font-size:13px;color:#555;margin-top:6px}
+.price-badge{display:inline-block;background:#dcfce7;color:#166534;font-size:12px;
+  font-weight:600;padding:3px 10px;border-radius:999px;margin-top:10px}
+
+.stock-info{display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:20px}
+.stock-dot{width:8px;height:8px;border-radius:50%}
+.stock-dot.in{background:#22c55e}
+.stock-dot.low{background:#f59e0b}
+.stock-dot.out{background:#ef4444}
+
+.btn-buy{width:100%;padding:16px;background:#0070f3;color:#fff;border:none;
+  border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;margin-bottom:10px}
+.btn-buy:hover{background:#005cd1}
+.btn-cart{width:100%;padding:14px;background:#fff;color:#0070f3;
+  border:2px solid #0070f3;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer}
+.btn-cart:hover{background:#eff6ff}
+
+.product-specs{margin-top:28px}
+.specs-title{font-size:14px;font-weight:600;color:#888;text-transform:uppercase;
+  letter-spacing:0.06em;margin-bottom:14px}
+.spec-row{display:flex;justify-content:space-between;align-items:center;
+  padding:10px 0;border-bottom:1px solid #f0f0f0;font-size:14px}
+.spec-row:last-child{border-bottom:none}
+.spec-key{color:#888}
+.spec-val{font-weight:500;color:#111}
+
+.description-section{padding:40px 0;border-top:1px solid #e5e5e5}
+.section-title{font-size:20px;font-weight:700;letter-spacing:-0.02em;margin-bottom:16px;color:#111}
+.description-text{font-size:15px;color:#444;max-width:65ch;line-height:1.8}
+
+footer{background:#fff;border-top:1px solid #e5e5e5;padding:24px 0;
+  font-size:13px;color:#888;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="header-inner">
+      <div class="brand">Tech<span>Store</span></div>
+      <nav>
+        <a href="#">Notebooks</a>
+        <a href="#">Desktops</a>
+        <a href="#">Periféricos</a>
+        <a href="#">Ofertas</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="breadcrumb">
+    <a href="#">Home</a><span>›</span>
+    <a href="#">Notebooks</a><span>›</span>
+    <span style="color:#333">Notebook Pro X500</span>
+  </div>
+
+  <div class="product-layout">
+
+    <!-- Imagem -->
+    <div>
+      <div class="product-image">
+        <div class="product-image-placeholder">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/>
+          </svg>
+          Notebook Pro X500
+        </div>
+      </div>
+    </div>
+
+    <!-- Info -->
+    <div class="product-info">
+      <div class="product-category">Notebooks Gamer</div>
+      <h1 class="product-title" id="product-title">Notebook Pro X500</h1>
+
+      <div class="product-rating">
+        <span class="stars">★★★★★</span>
+        <span class="rating-count">4.8 (127 avaliações)</span>
+      </div>
+
+      <div class="price-section">
+        <div class="price-label">Preço</div>
+        <!-- ↓↓↓ ALTERE AQUI PARA OS TESTES ↓↓↓ -->
+        <div class="price-original" id="price-original">R$ 6.499,00</div>
+        <div class="price-current" id="price-current">R$ 5.499,00</div>
+        <div class="price-installment">em até 12x de <strong>R$ 458,25</strong> sem juros</div>
+        <div class="price-badge" id="price-badge">🏷 15% OFF</div>
+        <!-- ↑↑↑ FIM DA SEÇÃO DE PREÇO ↑↑↑ -->
+      </div>
+
+      <div class="stock-info">
+        <!-- Troque a classe do dot: "in" = disponível, "low" = últimas unidades, "out" = esgotado -->
+        <span class="stock-dot in" id="stock-dot"></span>
+        <span id="stock-text">Em estoque — Entrega em até 2 dias úteis</span>
+      </div>
+
+      <button class="btn-buy">Comprar agora</button>
+      <button class="btn-cart">Adicionar ao carrinho</button>
+
+      <div class="product-specs">
+        <div class="specs-title">Especificações</div>
+        <div class="spec-row"><span class="spec-key">Processador</span><span class="spec-val">Intel Core i9-14900H</span></div>
+        <div class="spec-row"><span class="spec-key">GPU</span><span class="spec-val">NVIDIA RTX 4060 8GB</span></div>
+        <div class="spec-row"><span class="spec-key">Memória RAM</span><span class="spec-val">32GB DDR5</span></div>
+        <div class="spec-row"><span class="spec-key">Armazenamento</span><span class="spec-val">SSD NVMe 1TB</span></div>
+        <div class="spec-row"><span class="spec-key">Tela</span><span class="spec-val">16" IPS 165Hz 2K</span></div>
+        <div class="spec-row"><span class="spec-key">SKU</span><span class="spec-val" id="sku">PRO-X500-001</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="description-section">
+    <h2 class="section-title">Sobre o produto</h2>
+    <p class="description-text">
+      O Notebook Pro X500 foi projetado para quem exige máxima performance em jogos e criação de conteúdo.
+      Com processador Intel Core i9 de 14ª geração e placa NVIDIA RTX 4060, ele entrega frames por segundo
+      elevados em qualquer resolução. O display IPS de 165Hz com resolução 2K garante imagens nítidas e
+      fluidas, enquanto os 32GB de RAM DDR5 permitem multitarefas sem gargalos.
+    </p>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    © 2026 TechStore — Página de teste para automações N8N
+  </div>
+</footer>
+
+</body>
+</html>
