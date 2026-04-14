@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>price-simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root,[data-theme="light"]{
+  --color-bg:#f7f6f2;--color-surface:#f9f8f5;--color-surface-2:#fbfbf9;
+  --color-surface-offset:#f3f0ec;--color-divider:#dcd9d5;--color-border:#d4d1ca;
+  --color-text:#28251d;--color-text-muted:#7a7974;--color-text-faint:#bab9b4;
+  --color-primary:#01696f;--color-primary-hover:#0c4e54;--color-primary-highlight:#cedcd8;
+  --color-success:#437a22;--color-success-highlight:#d4dfcc;
+  --color-error:#a12c7b;--color-error-highlight:#e0ced7;
+  --color-orange:#da7101;--color-orange-highlight:#e7d7c4;
+  --color-gold:#d19900;--color-gold-highlight:#e9e0c6;
+  --shadow-sm:0 1px 2px oklch(0.2 0.01 80/0.06);
+  --shadow-md:0 4px 12px oklch(0.2 0.01 80/0.08);
+  --radius-sm:0.375rem;--radius-md:0.5rem;--radius-lg:0.75rem;--radius-xl:1rem;--radius-full:9999px;
+  --text-xs:clamp(0.75rem,0.7rem + 0.25vw,0.875rem);
+  --text-sm:clamp(0.875rem,0.8rem + 0.35vw,1rem);
+  --text-base:clamp(1rem,0.95rem + 0.25vw,1.125rem);
+  --text-lg:clamp(1.125rem,1rem + 0.75vw,1.5rem);
+  --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);
+  --font-body:'Inter',sans-serif;--font-mono:'JetBrains Mono',monospace;
+  --transition:180ms cubic-bezier(0.16,1,0.3,1);
+  --space-1:0.25rem;--space-2:0.5rem;--space-3:0.75rem;--space-4:1rem;
+  --space-5:1.25rem;--space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;
+  --space-12:3rem;--space-16:4rem;
+}
+[data-theme="dark"]{
+  --color-bg:#171614;--color-surface:#1c1b19;--color-surface-2:#201f1d;
+  --color-surface-offset:#1d1c1a;--color-divider:#262523;--color-border:#393836;
+  --color-text:#cdccca;--color-text-muted:#797876;--color-text-faint:#5a5957;
+  --color-primary:#4f98a3;--color-primary-hover:#227f8b;--color-primary-highlight:#313b3b;
+  --color-success:#6daa45;--color-success-highlight:#3a4435;
+  --color-error:#d163a7;--color-error-highlight:#4c3d46;
+  --color-orange:#fdab43;--color-orange-highlight:#564b3e;
+  --color-gold:#e8af34;--color-gold-highlight:#4d4332;
+  --shadow-sm:0 1px 2px oklch(0 0 0/0.2);
+  --shadow-md:0 4px 12px oklch(0 0 0/0.3);
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{min-height:100dvh;font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);background:var(--color-bg);line-height:1.6}
+button{cursor:pointer;background:none;border:none;font:inherit;color:inherit}
+a,button,[role="button"],input,select,textarea{transition:color var(--transition),background var(--transition),border-color var(--transition),box-shadow var(--transition)}
+:focus-visible{outline:2px solid var(--color-primary);outline-offset:3px;border-radius:var(--radius-sm)}
+.container{max-width:960px;margin-inline:auto;padding-inline:var(--space-6)}
+
+header{border-bottom:1px solid var(--color-divider);padding:var(--space-4) 0}
+.header-inner{display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:var(--space-2);font-weight:600;font-size:var(--text-sm);letter-spacing:-0.02em}
+.logo svg{color:var(--color-primary)}
+.theme-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-md);color:var(--color-text-muted)}
+.theme-btn:hover{background:var(--color-surface-offset);color:var(--color-text)}
+
+main{padding:var(--space-10) 0 var(--space-16)}
+.page-title{font-size:var(--text-xl);font-weight:700;letter-spacing:-0.03em;margin-bottom:var(--space-2)}
+.page-desc{font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-8);max-width:60ch}
+
+/* Product Card */
+.product-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-8);margin-bottom:var(--space-6);box-shadow:var(--shadow-sm)}
+.product-header{display:grid;grid-template-columns:1fr auto;gap:var(--space-6);align-items:start;margin-bottom:var(--space-6)}
+@media(max-width:600px){.product-header{grid-template-columns:1fr}}
+.product-name{font-size:var(--text-lg);font-weight:600;letter-spacing:-0.02em;margin-bottom:var(--space-1)}
+.product-desc-text{font-size:var(--text-sm);color:var(--color-text-muted)}
+.price-display{display:flex;align-items:baseline;gap:var(--space-2);margin-bottom:var(--space-2)}
+.price-current{font-family:var(--font-mono);font-size:var(--text-xl);font-weight:600;color:var(--color-text);letter-spacing:-0.04em;transition:color 0.5s}
+.price-meta{display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap}
+.price-label{font-size:var(--text-xs);color:var(--color-text-faint)}
+.price-badge{display:inline-flex;align-items:center;gap:var(--space-1);font-size:var(--text-xs);font-weight:600;padding:var(--space-1) var(--space-2);border-radius:var(--radius-full)}
+.badge-up{background:var(--color-error-highlight);color:var(--color-error)}
+.badge-down{background:var(--color-success-highlight);color:var(--color-success)}
+.badge-neutral{background:var(--color-surface-offset);color:var(--color-text-muted)}
+.stat-box{text-align:right}
+.stat-label{font-size:var(--text-xs);color:var(--color-text-faint);margin-bottom:var(--space-1)}
+.stat-value{font-family:var(--font-mono);font-size:var(--text-lg);font-weight:700}
+
+/* Price List */
+.price-list-section{border-top:1px solid var(--color-divider);padding-top:var(--space-6)}
+.section-label{font-size:var(--text-xs);font-weight:600;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:var(--space-4)}
+.price-list{display:flex;flex-direction:column;gap:var(--space-2);margin-bottom:var(--space-5)}
+.price-option{display:grid;grid-template-columns:auto 1fr auto auto;gap:var(--space-4);align-items:center;padding:var(--space-3) var(--space-4);background:var(--color-surface-2);border:2px solid transparent;border-radius:var(--radius-lg);cursor:pointer;transition:background var(--transition),border-color var(--transition)}
+.price-option:hover{background:var(--color-surface-offset)}
+.price-option.active{border-color:var(--color-primary);background:var(--color-primary-highlight)}
+.option-radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--color-border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color var(--transition),background var(--transition)}
+.price-option.active .option-radio{border-color:var(--color-primary);background:var(--color-primary)}
+.option-radio-dot{width:8px;height:8px;border-radius:50%;background:#fff;opacity:0;transition:opacity var(--transition)}
+.price-option.active .option-radio-dot{opacity:1}
+.option-info{display:flex;flex-direction:column;gap:2px}
+.option-name{font-size:var(--text-sm);font-weight:600}
+.option-tag{font-size:var(--text-xs);color:var(--color-text-muted)}
+.option-price{font-family:var(--font-mono);font-size:var(--text-sm);font-weight:600;text-align:right}
+.option-diff{font-size:var(--text-xs);font-weight:600;text-align:right}
+.diff-up{color:var(--color-error)}
+.diff-down{color:var(--color-success)}
+.diff-neutral{color:var(--color-text-faint)}
+.option-actions{display:flex;gap:var(--space-1)}
+.icon-btn{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-sm);color:var(--color-text-faint);font-size:14px}
+.icon-btn:hover{background:var(--color-surface-offset);color:var(--color-text)}
+.icon-btn.delete:hover{background:var(--color-error-highlight);color:var(--color-error)}
+
+/* Add price form */
+.add-price-form{background:var(--color-surface-2);border:1px dashed var(--color-border);border-radius:var(--radius-lg);padding:var(--space-4);display:flex;gap:var(--space-3);align-items:flex-end;flex-wrap:wrap}
+.add-form-group{display:flex;flex-direction:column;gap:var(--space-2);flex:1;min-width:140px}
+label{font-size:var(--text-xs);font-weight:600;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.07em}
+input,select{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);font-size:var(--text-sm);color:var(--color-text);width:100%}
+input:focus,select:focus{outline:2px solid var(--color-primary);outline-offset:0;border-color:transparent}
+.btn{display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-3) var(--space-5);border-radius:var(--radius-md);font-size:var(--text-sm);font-weight:600;cursor:pointer;border:none}
+.btn-primary{background:var(--color-primary);color:#fff}
+.btn-primary:hover{background:var(--color-primary-hover)}
+.btn-ghost{background:transparent;color:var(--color-text-muted);border:1px solid var(--color-border)}
+.btn-ghost:hover{background:var(--color-surface-offset);color:var(--color-text)}
+.btn-apply{background:var(--color-primary);color:#fff;width:100%;justify-content:center;padding:var(--space-4);font-size:var(--text-base);border-radius:var(--radius-lg);margin-top:var(--space-4)}
+.btn-apply:hover{background:var(--color-primary-hover)}
+.btn-apply:disabled{opacity:0.4;cursor:not-allowed}
+
+/* API */
+.api-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6);margin-bottom:var(--space-6)}
+.api-title{font-size:var(--text-sm);font-weight:600;margin-bottom:var(--space-4);display:flex;align-items:center;gap:var(--space-2)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--color-success);box-shadow:0 0 6px var(--color-success)}
+.response-preview{background:var(--color-surface-offset);border-radius:var(--radius-md);padding:var(--space-4);font-family:var(--font-mono);font-size:var(--text-xs);color:var(--color-text);overflow-x:auto;white-space:pre;line-height:1.7}
+
+/* History */
+.history-card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-6)}
+.history-header{font-size:var(--text-sm);font-weight:600;margin-bottom:var(--space-4);color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.08em;display:flex;justify-content:space-between;align-items:center}
+.history-item{display:grid;grid-template-columns:1fr auto auto auto;gap:var(--space-4);align-items:center;padding:var(--space-3) var(--space-4);background:var(--color-surface-2);border-radius:var(--radius-md);font-size:var(--text-xs);margin-bottom:var(--space-2)}
+.h-time{color:var(--color-text-faint)}
+.h-scenario{color:var(--color-text-muted)}
+.h-price{font-family:var(--font-mono);font-weight:600}
+.h-diff{font-weight:600}
+.empty-state{text-align:center;padding:var(--space-8);color:var(--color-text-faint);font-size:var(--text-sm)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="header-inner">
+      <div class="logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-label="Logo">
+          <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
+        </svg>
+        Price Simulator
+      </div>
+      <button class="theme-btn" data-theme-toggle aria-label="Alternar tema">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+    <h1 class="page-title">Simulador de Preços</h1>
+    <p class="page-desc">Selecione um cenário de preço da lista para aplicar ao produto. O N8N lê o JSON atualizado via HTTP Request.</p>
+
+    <!-- Product Card -->
+    <div class="product-card">
+      <div class="product-header">
+        <div>
+          <div class="product-name" id="productName">Notebook Pro X500</div>
+          <div class="product-desc-text" id="productDesc">Notebook gamer 16" — RTX 4060, 32GB RAM, SSD 1TB</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Aplicações</div>
+          <div class="stat-value" id="updateCount">0</div>
+        </div>
+      </div>
+
+      <div class="price-display">
+        <span class="price-current" id="priceDisplay">R$ 5.499,00</span>
+      </div>
+      <div class="price-meta">
+        <span class="price-label">Atualizado: <span id="lastUpdate">—</span></span>
+        <span class="price-badge badge-neutral" id="priceBadge">—</span>
+        <span class="price-label" id="activeScenarioLabel" style="color:var(--color-primary);font-weight:600"></span>
+      </div>
+
+      <!-- Price List -->
+      <div class="price-list-section">
+        <div class="section-label">Cenários de Preço — selecione e aplique</div>
+        <div class="price-list" id="priceList"></div>
+
+        <!-- Add form -->
+        <div class="add-price-form">
+          <div class="add-form-group">
+            <label for="newName">Nome do cenário</label>
+            <input type="text" id="newName" placeholder="Ex: Promoção Black Friday">
+          </div>
+          <div class="add-form-group" style="max-width:160px">
+            <label for="newPrice">Preço (R$)</label>
+            <input type="number" id="newPrice" placeholder="0,00" step="0.01" min="0">
+          </div>
+          <div class="add-form-group" style="max-width:180px">
+            <label for="newTag">Tag (opcional)</label>
+            <input type="text" id="newTag" placeholder="Ex: desconto, alta, normal">
+          </div>
+          <button class="btn btn-ghost" onclick="addScenario()" style="flex-shrink:0;white-space:nowrap">+ Adicionar</button>
+        </div>
+
+        <button class="btn btn-apply" id="applyBtn" onclick="applySelected()" disabled>
+          ✓ Aplicar Cenário Selecionado
+        </button>
+      </div>
+    </div>
+
+    <!-- API JSON -->
+    <div class="api-card">
+      <div class="api-title"><span class="dot"></span> JSON para o N8N (elemento #json-output)</div>
+      <p style="font-size:var(--text-xs);color:var(--color-text-muted);margin-bottom:var(--space-3)">
+        Use <strong>HTTP Request (GET)</strong> + <strong>HTML Extract → #json-output</strong> para capturar os dados abaixo.
+      </p>
+      <div class="response-preview" id="jsonOutput">{}</div>
+    </div>
+
+    <!-- History -->
+    <div class="history-card">
+      <div class="history-header">
+        <span>Histórico</span>
+        <button class="btn btn-ghost" style="padding:var(--space-1) var(--space-3);font-size:var(--text-xs)" onclick="clearHistory()">Limpar</button>
+      </div>
+      <div id="historyList"><div class="empty-state">Nenhum cenário aplicado ainda.</div></div>
+    </div>
+
+    <div id="json-output" style="display:none"></div>
+  </div>
+</main>
+
+<script>
+// Theme toggle
+(function(){
+  const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
+  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  r.setAttribute('data-theme',d);
+  t&&t.addEventListener('click',()=>{
+    d=d==='dark'?'light':'dark';r.setAttribute('data-theme',d);
+    t.innerHTML=d==='dark'
+      ?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+      :'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+  });
+})();
+
+const fmt = v => v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+
+let state = {
+  currentPrice: 5499,
+  selectedId: null,
+  count: 0,
+  history: [],
+  scenarios: [
+    {id:1, name:'Preço Normal',       price:5499,  tag:'padrão'},
+    {id:2, name:'Promoção Relâmpago', price:4799,  tag:'desconto'},
+    {id:3, name:'Preço Elevado',      price:5999,  tag:'alta'},
+    {id:4, name:'Liquidação',         price:3999,  tag:'liquidação'},
+    {id:5, name:'Lançamento',         price:6499,  tag:'premium'},
+  ],
+  nextId: 6
+};
+
+function diffInfo(newPrice, oldPrice){
+  const diff = newPrice - oldPrice;
+  const pct = oldPrice > 0 ? (diff/oldPrice)*100 : 0;
+  return {diff, pct};
+}
+
+function renderList(){
+  const list = document.getElementById('priceList');
+  const {scenarios, selectedId, currentPrice} = state;
+
+  list.innerHTML = scenarios.map(s => {
+    const {diff, pct} = diffInfo(s.price, currentPrice);
+    const isActive = s.id === selectedId;
+    const diffClass = diff > 0 ? 'diff-up' : diff < 0 ? 'diff-down' : 'diff-neutral';
+    const diffText = diff === 0 ? '—' : (diff > 0 ? '▲ +' : '▼ −') + Math.abs(pct).toFixed(1) + '%';
+    return `
+      <div class="price-option${isActive?' active':''}" onclick="selectScenario(${s.id})" role="button" tabindex="0">
+        <div class="option-radio"><div class="option-radio-dot"></div></div>
+        <div class="option-info">
+          <span class="option-name">${s.name}</span>
+          <span class="option-tag">${s.tag||''}</span>
+        </div>
+        <div>
+          <div class="option-price">${fmt(s.price)}</div>
+          <div class="option-diff ${diffClass}">${diffText}</div>
+        </div>
+        <div class="option-actions">
+          <button class="icon-btn delete" onclick="deleteScenario(event,${s.id})" aria-label="Excluir">✕</button>
+        </div>
+      </div>`;
+  }).join('');
+
+  document.getElementById('applyBtn').disabled = selectedId === null;
+}
+
+function selectScenario(id){
+  state.selectedId = id;
+  renderList();
+}
+
+function deleteScenario(e, id){
+  e.stopPropagation();
+  state.scenarios = state.scenarios.filter(s => s.id !== id);
+  if(state.selectedId === id) state.selectedId = null;
+  renderList();
+}
+
+function addScenario(){
+  const name  = document.getElementById('newName').value.trim();
+  const price = parseFloat(document.getElementById('newPrice').value);
+  const tag   = document.getElementById('newTag').value.trim();
+  if(!name || isNaN(price) || price <= 0) return;
+  state.scenarios.push({id: state.nextId++, name, price, tag});
+  document.getElementById('newName').value = '';
+  document.getElementById('newPrice').value = '';
+  document.getElementById('newTag').value = '';
+  renderList();
+}
+
+function applySelected(){
+  const s = state.scenarios.find(x => x.id === state.selectedId);
+  if(!s) return;
+
+  const prev = state.currentPrice;
+  state.currentPrice = s.price;
+  state.count++;
+
+  const {diff, pct} = diffInfo(s.price, prev);
+  const now = new Date();
+
+  // Update UI
+  document.getElementById('priceDisplay').textContent = fmt(s.price);
+  document.getElementById('updateCount').textContent = state.count;
+  document.getElementById('lastUpdate').textContent = now.toLocaleTimeString('pt-BR');
+  document.getElementById('activeScenarioLabel').textContent = s.name;
+
+  const badge = document.getElementById('priceBadge');
+  if(diff > 0){badge.className='price-badge badge-up';badge.textContent='▲ +'+Math.abs(pct).toFixed(2)+'%';}
+  else if(diff < 0){badge.className='price-badge badge-down';badge.textContent='▼ −'+Math.abs(pct).toFixed(2)+'%';}
+  else{badge.className='price-badge badge-neutral';badge.textContent='— 0.00%';}
+
+  // Animate
+  const el = document.getElementById('priceDisplay');
+  el.style.color = diff>0?'var(--color-error)':diff<0?'var(--color-success)':'var(--color-text)';
+  setTimeout(()=>{el.style.color='var(--color-text)';},800);
+
+  // History
+  state.history.unshift({time:now.toLocaleTimeString('pt-BR'), scenario:s.name, price:s.price, diff, pct});
+  if(state.history.length>20) state.history.pop();
+  renderHistory();
+
+  // JSON
+  const data = {
+    produto: document.getElementById('productName').textContent,
+    cenario: s.name,
+    tag: s.tag||'',
+    preco: parseFloat(s.price.toFixed(2)),
+    preco_formatado: fmt(s.price),
+    preco_anterior: parseFloat(prev.toFixed(2)),
+    variacao_reais: parseFloat(diff.toFixed(2)),
+    variacao_percentual: parseFloat(pct.toFixed(2)),
+    tendencia: diff>0?'alta':diff<0?'queda':'estavel',
+    timestamp: now.toISOString(),
+    timestamp_br: now.toLocaleString('pt-BR'),
+    total_aplicacoes: state.count
+  };
+  document.getElementById('json-output').textContent = JSON.stringify(data);
+  document.getElementById('jsonOutput').textContent = JSON.stringify(data, null, 2);
+
+  // Re-render list (update diffs from new base price)
+  renderList();
+}
+
+function renderHistory(){
+  const el = document.getElementById('historyList');
+  if(!state.history.length){
+    el.innerHTML='<div class="empty-state">Nenhum cenário aplicado ainda.</div>';
+    return;
+  }
+  el.innerHTML = state.history.map(h=>`
+    <div class="history-item">
+      <span class="h-time">${h.time}</span>
+      <span class="h-scenario">${h.scenario}</span>
+      <span class="h-price">${fmt(h.price)}</span>
+      <span class="h-diff ${h.diff>0?'diff-up':h.diff<0?'diff-down':'diff-neutral'}">
+        ${h.diff===0?'—':h.diff>0?'▲ +':'▼ −'}${h.diff!==0?Math.abs(h.pct).toFixed(2)+'%':''}
+      </span>
+    </div>`).join('');
+}
+
+function clearHistory(){ state.history=[]; renderHistory(); }
+
+// Keyboard support for options
+document.addEventListener('keydown', e => {
+  if(e.key==='Enter'&&e.target.classList.contains('price-option')){
+    const id = parseInt(e.target.getAttribute('onclick').match(/\d+/)[0]);
+    selectScenario(id);
+  }
+});
+
+// Init
+renderList();
+const initData = {produto:'Notebook Pro X500',preco:5499,preco_formatado:fmt(5499),cenario:'Nenhum aplicado',timestamp:new Date().toISOString()};
+document.getElementById('json-output').textContent = JSON.stringify(initData);
+document.getElementById('jsonOutput').textContent = JSON.stringify(initData,null,2);
+</script>
+</body>
+</html>
